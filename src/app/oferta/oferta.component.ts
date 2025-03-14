@@ -64,5 +64,6 @@ export class OfertaComponent implements OnInit {
       () => console.log('finalizou')
     )
     */
+   
   }
 }
