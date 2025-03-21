@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Oferta } from '../shared/oferta.model';
 import { OfertasService } from '../ofertas.service';
 import { CommonModule } from '@angular/common';
@@ -23,11 +23,15 @@ export class OfertaComponent implements OnInit {
   constructor(private route: ActivatedRoute, private ofertaService: OfertasService) {}
 
   ngOnInit(): void {
-    console.log(this.route.snapshot.params['id']); //obtem um parametro da rota, bom para passar parametros pela rota. neste caso obtem o 'id', mas pode obtem outros tipo 'date' ou outros;
-    this.ofertaService.getOfertasPorId(Number(this.route.snapshot.params['id']))
-    .then((oferta: Oferta) => {
-      this.oferta = oferta;
+    //console.log(this.route.snapshot.params['id']); //obtem um parametro da rota, bom para passar parametros pela rota. neste caso obtem o 'id', mas pode obtem outros tipo 'date' ou outros;
+    this.route.params.subscribe((parametros: any) => {
+      this.ofertaService.getOfertasPorId(Number(parametros.id))
+      .then((oferta: Oferta) => {
+        this.oferta = oferta;
+      })
     })
+    
+    
     
     /*trabalhando com observavel. O subscribe é um observador e está se inscrevendo em um observavel.
     definindo como o observavel deve lidar com instrucoes, erro e a conclusao. Neste caso, a primeira acao é lidar com instrucoes.

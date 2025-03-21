@@ -1,8 +1,8 @@
 import { Oferta } from "./shared/oferta.model";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { API_URL } from "./app.api";
-import { map, Observable } from "rxjs";
+import { map, Observable, retry } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -43,10 +43,10 @@ export class OfertasService {
         .then((resposta: any) => resposta[0].descricao);
     }
 
-    public pesquisaOfertas(termo: string): Observable<Oferta[]>{
-        return this.http.get(`${API_URL}/ofertas?descricao_oferta=${termo}`)
-        .pipe(
-            map((resposta: any) => resposta.json())
-        )
-    }
+    public pesquisaOfertas(termo: string): Observable<Oferta[]> {
+        return this.http.get<Oferta[]>(`${API_URL}/ofertas?descricao_oferta=${termo}`)
+          .pipe(
+            retry(10) // Repetir a requisição até 10 vezes em caso de falha
+          );
+      }
 }
