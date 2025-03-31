@@ -9,7 +9,7 @@ export class OrdemCompraService {
 
     constructor(private http: HttpClient){}
 
-    public efetivarCompra(pedido: Pedido): Observable<any>{
+    public efetivarCompra(pedido: Pedido): Observable<string>{
 
         const headers = new HttpHeaders();
         headers.append('Content-type', 'application/json');
@@ -18,9 +18,8 @@ export class OrdemCompraService {
             `${API_URL}/pedidos`,
             JSON.stringify(pedido),
             {headers: headers}
-        )
-        .pipe(
-            map((resposta: any) => console.log(resposta))
+        ).pipe(
+            map((resposta: any) => resposta.id)
         );
     }
 }
