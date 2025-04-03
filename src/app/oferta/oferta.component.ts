@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { interval, Observable, Observer } from 'rxjs';
+import { CarrinhoService } from '../carrinho.service';
+import { ItemCarrinho } from '../shared/item-carrinho.model';
 
 @Component({
   selector: 'app-oferta',
@@ -20,19 +22,18 @@ export class OfertaComponent implements OnInit {
   public oferta: Oferta | undefined;
   public tempo: number = 0;
 
-  constructor(private route: ActivatedRoute, private ofertaService: OfertasService) {}
+  constructor(private route: ActivatedRoute, private ofertaService: OfertasService, private carrinhoService: CarrinhoService) {}
 
   ngOnInit(): void {
+    console.log(this.carrinhoService.exibirItens());
+
     //console.log(this.route.snapshot.params['id']); //obtem um parametro da rota, bom para passar parametros pela rota. neste caso obtem o 'id', mas pode obtem outros tipo 'date' ou outros;
     this.route.params.subscribe((parametros: any) => {
       this.ofertaService.getOfertasPorId(Number(parametros.id))
       .then((oferta: Oferta) => {
         this.oferta = oferta;
       })
-    })
-    
-    
-    
+    })  
     /*trabalhando com observavel. O subscribe é um observador e está se inscrevendo em um observavel.
     definindo como o observavel deve lidar com instrucoes, erro e a conclusao. Neste caso, a primeira acao é lidar com instrucoes.
     a segunda lidar com erros e a ultima lidar com conclusao. Parecido com then, catch e finally
@@ -68,6 +69,10 @@ export class OfertaComponent implements OnInit {
       () => console.log('finalizou')
     )
     */
-   
+  }
+
+  public adicionarItemCarrinho(): void{
+    this.carrinhoService.incluirItem(this.oferta!);
+    console.log(this.carrinhoService.exibirItens());
   }
 }

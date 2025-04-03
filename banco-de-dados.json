@@ -187,18 +187,73 @@
   ],
   "pedidos": [
     {
-      "id": "4648",
-      "endereco": "teste",
-      "numero": "1",
-      "complemento": "teste",
+      "id": "ca81",
+      "endereco": "rrrrr",
+      "numero": "2",
+      "complemento": "rrrrr",
       "formaPagamento": "dinheiro"
     },
     {
-      "id": "7c38",
-      "endereco": "teste",
-      "numero": "1",
-      "complemento": "trste",
+      "id": "f8cc",
+      "endereco": "rrrrr",
+      "numero": "2",
+      "complemento": "tttttt",
       "formaPagamento": "dinheiro"
+    },
+    {
+      "id": "0cdc",
+      "endereco": "rrrrrrr",
+      "numero": "2",
+      "complemento": "eeeeeeee",
+      "formaPagamento": "dinheiro"
+    },
+    {
+      "id": "6069",
+      "endereco": "dddd",
+      "numero": "2",
+      "complemento": "eeee",
+      "formaPagamento": "dinheiro",
+      "carrinho": [
+        {
+          "id": 4,
+          "img": {
+            "url": "/assets/ofertas/4/img1.jpg"
+          },
+          "titulo": "Estância das águas",
+          "descricaoOferta": "Diversão garantida com piscinas, trilhas e muito mais.",
+          "valor": 31.9,
+          "quantidade": 1
+        },
+        {
+          "id": 5,
+          "img": {
+            "url": "/assets/ofertas/5/img1.jpg"
+          },
+          "titulo": "Kart",
+          "descricaoOferta": "Bateria de Kart de 30 minutos.",
+          "valor": 54.9,
+          "quantidade": 1
+        }
+      ]
+    },
+    {
+      "id": "75dc",
+      "endereco": "dddd",
+      "numero": "2",
+      "complemento": "eee",
+      "formaPagamento": "dinheiro",
+      "carrinho": [
+        {
+          "id": 2,
+          "img": {
+            "url": "/assets/ofertas/2/img1.jpg"
+          },
+          "titulo": "Cozinha Mexicana",
+          "descricaoOferta": "Almoço ou Jantar com Rodízio Mexicano delicioso.",
+          "valor": 32.9,
+          "quantidade": 1
+        }
+      ]
     }
   ]
 }

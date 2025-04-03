@@ -1,6 +1,120 @@
+<!--REACTIVE FORMS-->
 <div class="container">
-  <div class="ordem-compra">
-    <form novalidate #formulario="ngForm">
+  <div *ngIf="!idPedidoCompra" class="ordem-compra">
+    <form [formGroup]="formulario" novalidate (ngSubmit)="confirmarCompra()">
+    
+      <h5>Sua Compra</h5>
+      <hr />
+
+      <div *ngIf="this.itensCarrinho.length; else carrinhoVazio">
+          <div *ngFor="let item of itensCarrinho" class="form-row" style="background: #FAFAFA; padding: 20px; border-bottom: solid 1px #F0F0F0">
+            <div class="form-group col-sm-1">
+              <img [src]="item.img.url" class="img-fluid">
+            </div>
+            <div class="form-group col-sm-6">
+              {{item.titulo}}
+              <br />
+              {{item.descricaoOferta}}
+            </div>
+
+            <div>
+              <div class="row">
+                <div class="col">
+                  <button type="button" class="btn btn-link" (click)="diminuirQuantidade(item.id)">-</button>
+                  {{item.quantidade}}
+                  <button type="button" class="btn btn-link" (click)="adicionarQuantidade(item.id)">+</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-sm-3 d-flex justify-content-end">
+              {{item.valor*item.quantidade | currency: 'BRL': true}}
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group col d-flex justify-content-end">
+              <h4>Total do pedido: {{getTotalCompra() | currency: 'BRL': true}}</h4>
+            </div>
+          </div>
+    </div>
+    <ng-template #carrinhoVazio>
+      <p>Carrinho vazio</p>
+    </ng-template>
+      <br />
+
+      <h5>Dados de entrega</h5>
+      <hr />
+
+      <div class="form-row">
+
+        <div class="form-group col-md-6">
+          <input 
+            type="text" 
+            class="form-control inputi" 
+            placeholder="Endereço" 
+            autocomplete="off" 
+            name="endereco"
+            formControlName="endereco">
+
+            <small *ngIf="formulario.get('endereco')?.valid && formulario.get('endereco')?.touched" class="form-text text-success">OK</small>
+            <small *ngIf="formulario.get('endereco')?.invalid && formulario.get('endereco')?.touched" class="form-text text-danger">Endereço inválido</small>
+        </div>
+
+        <div class="form-group col-md-2">
+          <input 
+            type="text" 
+            class="form-control" 
+            placeholder="Número" 
+            autocomplete="off" 
+            name="numero"
+            formControlName="numero">
+          <br />
+        </div>
+
+        <div class="form-group col-md-4">
+          <input 
+            type="text" 
+            class="form-control" 
+            placeholder="Complemento" 
+            autocomplete="off"
+            name="complemento"
+            formControlName="complemento">
+        </div>
+
+      </div>
+      <br />
+
+      <h5>Dados de pagamento</h5>
+      <hr />
+
+      <div class="form-row">
+          
+        <div class="form-group col-md-3">
+          <select class="form-control" name="formaPagamento" formControlName="formaPagamento">
+            <option value="" selected>Selecione uma opção</option>
+            <option value="dinheiro">Dinheiro</option>
+            <option value="debito">Débito</option>
+          </select>
+        </div>
+      </div>
+
+      <hr />
+      <!--[disabled]="formulario.invalid"-->
+      <button type="submit" class="btn btn-primary btn-lg" >Cofirmar compra</button>
+    </form>
+  </div>
+
+  <div class="ordem-compra" *ngIf="idPedidoCompra">
+    <app-ordem-compra-sucesso [idPedidoCompra]="idPedidoCompra"></app-ordem-compra-sucesso>
+  </div>
+</div>
+
+
+<!-- TEMPLATE FORMS
+<div class="container">
+  <div *ngIf="!idPedidoCompra" class="ordem-compra">
+    <form novalidate #formulario="ngForm" (ngSubmit)="confirmarCompra()">
     
       <h5>Sua Compra</h5>
       <hr />
@@ -62,7 +176,6 @@
       </div>
       <br />
 
-      <pre>{{ formulario.value | json }}</pre>
       <h5>Dados de entrega</h5>
       <hr />
 
@@ -71,25 +184,29 @@
         <div class="form-group col-md-6">
           <input 
             type="text" 
-            class="form-control is-invalid" 
+            class="form-control inputi" 
             placeholder="Endereço" 
             autocomplete="off" 
-            minlength="5" 
-            required
             name="endereco"
-            ngModel>
+            required
+            minlength="3"
+            ngModel
+            #enderecoValido="ngModel">
+
+            <small *ngIf="enderecoValido.valid && enderecoValido.touched" class="form-text text-success">OK</small>
+            <small *ngIf="enderecoValido.invalid && enderecoValido.touched" class="form-text text-danger">Endereço inválido</small>
         </div>
 
         <div class="form-group col-md-2">
           <input 
             type="text" 
-            class="form-control is-valid" 
+            class="form-control" 
             placeholder="Número" 
             autocomplete="off" 
-            minlength="1" 
             name="numero"
             ngModel
-            required>
+            required
+            minlength="1">
           <br />
         </div>
 
@@ -112,7 +229,7 @@
       <div class="form-row">
           
         <div class="form-group col-md-3">
-          <select class="form-control is-valid" name="formaPagamento" ngModel>
+          <select class="form-control" name="formaPagamento" ngModel required>
             <option value="">Selecione uma opção</option>
             <option value="dinheiro">Dinheiro</option>
             <option value="debito">Débito</option>
@@ -121,10 +238,15 @@
       </div>
 
       <hr />
-      <button type="button" class="btn btn-primary btn-lg">Cofirmar compra</button>
+      <button type="submit" class="btn btn-primary btn-lg">Cofirmar compra</button>
     </form>
   </div>
 
+  <div class="ordem-compra" *ngIf="idPedidoCompra">
+    <app-ordem-compra-sucesso [idPedidoCompra]="idPedidoCompra"></app-ordem-compra-sucesso>
+  </div>
+</div>
+-->
 <!--DATA BINDING FORMULARIO
 <div class="container">
     <div class="ordem-compra" *ngIf="!idPedidoCompra">

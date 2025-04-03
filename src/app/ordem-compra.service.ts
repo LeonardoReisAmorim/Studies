@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { map, Observable } from "rxjs";
 import { API_URL } from "./app.api";
 
+//NAO É SINGLETON
 @Injectable()
 export class OrdemCompraService {
 

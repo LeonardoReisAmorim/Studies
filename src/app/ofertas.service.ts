@@ -4,9 +4,8 @@ import { Injectable } from "@angular/core";
 import { API_URL } from "./app.api";
 import { map, Observable, retry } from "rxjs";
 
-@Injectable({
-    providedIn: 'root'
-})
+//NAO É SINGLETON
+@Injectable()
 export class OfertasService {
 
     constructor(private http: HttpClient) {}
